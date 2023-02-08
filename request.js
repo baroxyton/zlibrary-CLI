@@ -11,6 +11,7 @@ async function GETRequest(endpoint, query){
 	if(config.isLoggedIn()){
 		headers = config.getLogin();
 	}
+	headers["User-Agent"] = "CLI";
 	return await axios({
 		method:"get",
 		url:endpoint,
@@ -29,10 +30,12 @@ async function POSTRequest(endpoint, params){
 		headers = config.getLogin();
 	}
 	headers["Content-Type"] = 'application/x-www-form-urlencoded';
+	headers["User-Agent"] = "CLI";
+	
 	return await axios({
 		method:"post",
 		url:endpoint,
-		baseURL:config.getMirror();
+		baseURL:config.getMirror(),
 		data:params,
 		headers
 	})
