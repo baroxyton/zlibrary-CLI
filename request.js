@@ -18,7 +18,7 @@ async function GETRequest(endpoint, query){
 		baseURL:config.getMirror(),
 		params:query,
 		headers
-	})	
+	}).catch(err=>{return err.response});	
 }
 /**
 * @param endpoint {string}
@@ -38,6 +38,6 @@ async function POSTRequest(endpoint, params){
 		baseURL:config.getMirror(),
 		data:params,
 		headers
-	})
+	}).catch(err=>{return err.response});
 }
 export default {GETRequest, POSTRequest};

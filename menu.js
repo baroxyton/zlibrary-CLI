@@ -10,14 +10,13 @@ async function startMenu(){
 		choices: [accountPrompt, "Seach z-library", "Browse downloaded books", "settings"]
 	});
 	let result = await prompt.run();
-	console.log("RESULT:" + result)
 	switch(result){
 		case "Sign out": 
 			api.logout();
 			startMenu();
 			break;
 		case "Log in/Sign up":
-			loginMenu();
+			loginOptions();
 			break;
 		case "Search z-library":
 			searchMenu();
@@ -34,7 +33,7 @@ function settingsMenu(){
 
 }
 function searchMenu(){}
-async function loginMenu(){
+async function loginOptions(){
 	console.clear();
 	const prompt = new Enquirer.Select({
 		name: "loginMenu",
@@ -46,7 +45,40 @@ async function loginMenu(){
 		case "Back": 
 			startMenu();
 			break;
+		case "Log in":
+			loginMenu();
+			break;
+		case "Sign up":
+			break;
+		case "Log in with user key":
+			break;
 	}
 }
+async function loginMenu(){
+	console.clear();
+	const prompt = new Enquirer.Form({
+		name: "loginForm",
+		message:"Login to Z-Library",
+		choices: [
+			{name: "mail", type: "input", message: "E-Mail", initial:"johndoe@example.com"},
+			{name:"password", type: "password", message: "Password", initial:"your password"}
+		]
+	})
+	const response = await prompt.run();
+	await api.login(response.mail, response.password);
+	startMenu();
+}
 function openDownloads(){}
+/**
+* @param error {string}
+*/
+async function errorPrompt(error){
+	const prompt = new Enquirer.Toggle({
+		message: "Error: " + error,
+		enabled:"Ok",
+		disabled: "Ok"
+	});
+	await prompt.run();
+}
 startMenu();
+export default {errorPrompt};
