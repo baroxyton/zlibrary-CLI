@@ -1,13 +1,15 @@
 import Enquirer from 'enquirer';
 import configs from './config.js';
 import api from './api.js'
+import vimShortcuts from './vim-shortcuts.js'
 async function startMenu(){
 	console.clear();
 	let accountPrompt = configs.isLoggedIn()?"Sign out":"Log in/Sign up";
 	const prompt = new Enquirer.Select({
 		name: 'startmenu',
 		message: 'What would you like to do?',
-		choices: [accountPrompt, "Seach z-library", "Browse downloaded books", "settings"]
+		choices: [accountPrompt, "Seach z-library", "Browse downloaded books", "settings"],
+		actions:vimShortcuts
 	});
 	let result = await prompt.run();
 	switch(result){
@@ -38,7 +40,8 @@ async function loginOptions(){
 	const prompt = new Enquirer.Select({
 		name: "loginMenu",
 		message: "What would you like to do?",
-		choices: ["Log in", "Sign up", "Log in with user key", "Back"]
+		choices: ["Log in", "Sign up", "Log in with user key", "Back"],
+		actions:vimShortcuts	
 	});
 	let result = await prompt.run();
 	switch(result){
