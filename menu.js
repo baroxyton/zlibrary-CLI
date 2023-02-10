@@ -8,7 +8,7 @@ async function startMenu(){
 	const prompt = new Enquirer.Select({
 		name: 'startmenu',
 		message: 'What would you like to do?',
-		choices: [accountPrompt, "Seach z-library", "Browse downloaded books", "settings"],
+		choices: [accountPrompt, "Search z-library", "Browse downloaded books", "settings"],
 		actions:vimShortcuts
 	});
 	let result = await prompt.run();
@@ -21,7 +21,7 @@ async function startMenu(){
 			loginOptions();
 			break;
 		case "Search z-library":
-			searchMenu();
+			await searchMenu();
 			break;
 		case "Browse downloaded books":
 			openDownloads();
@@ -34,7 +34,6 @@ async function startMenu(){
 function settingsMenu(){
 
 }
-function searchMenu(){}
 async function loginOptions(){
 	console.clear();
 	const prompt = new Enquirer.Select({
@@ -82,6 +81,43 @@ async function errorPrompt(error){
 		disabled: "Ok"
 	});
 	await prompt.run();
+}
+async function searchMenu(){
+	const prompt = new Enquirer.Form({
+		name:"searchForm",
+		message:"Search Z-Library",
+		choices: [
+		{name:"message", message:"Search term", initial:""},
+		{name:"yearFrom", message:"Start Year", initial:"all"},
+		{name:"yearTo", message:"End year", initial:"all"},
+		{name:"languages", message:"languages", initial:"english,german,french"}
+		
+		]
+	});
+	let answer = await prompt.run();
+	answer.languages = answer.languages.split(",");
+	answer.limit = 50
+	answer.order = "popular";
+	const response = await api.search(answer);
+	await bookListMenu(response);
+}
+async function bookListMenu(bookList){
+	const promptChoices = bookList.books.map((book,index)=>{
+		return {
+		name:String(index),
+		value:String(index),
+		message:book.title + " by " + book.author
+		}	
+	});
+	const postToView = await Enquirer.prompt([{
+		type:"select",
+		name:"book",
+		message:"Which book do you want to view?",
+		initial:"0",
+		choices:promptChoices,
+		actions:vimShortcuts
+	}]);
+	
 }
 startMenu();
 export default {errorPrompt};

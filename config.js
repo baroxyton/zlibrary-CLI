@@ -56,7 +56,7 @@ function setLang(lang){
 	config.set("lang", lang);
 }
 function getLogin(){
-	return {id:config.get("userid"),key:config.get("userkey")};
+	return {"remix-userid":config.get("userid"),"remix-userkey":config.get("userkey")};
 }
 function getMirror(){
 	return config.get("domain");
