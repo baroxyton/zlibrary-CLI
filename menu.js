@@ -88,8 +88,8 @@ async function searchMenu(){
 		message:"Search Z-Library",
 		choices: [
 		{name:"message", message:"Search term", initial:""},
-		{name:"yearFrom", message:"Start Year", initial:"all"},
-		{name:"yearTo", message:"End year", initial:"all"},
+		{name:"yearFrom", message:"Start Year", initial:"0"},
+		{name:"yearTo", message:"End year", initial:String(new Date().getFullYear())},
 		{name:"languages", message:"languages", initial:"english,german,french"}
 		
 		]
@@ -99,14 +99,19 @@ async function searchMenu(){
 	answer.limit = 50
 	answer.order = "popular";
 	const response = await api.search(answer);
+	try{
 	await bookListMenu(response);
+	}
+	catch(err){
+		await searchMenu();
+	}
 }
 async function bookListMenu(bookList){
 	const promptChoices = bookList.books.map((book,index)=>{
 		return {
 		name:String(index),
 		value:String(index),
-		message:book.title + " by " + book.author
+		message: String(index + 1) + "| " +book.title + " by " + book.author
 		}	
 	});
 	const postToView = await Enquirer.prompt([{
