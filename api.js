@@ -1,6 +1,7 @@
 import requests from "./request.js";
 import menus from './menu.js';
 import configs from "./config.js";
+import axios from 'axios';
 
 /**
  * @params username {string}
@@ -29,4 +30,17 @@ function logout(){
 	configs.logout();
 	return true;
 }
-export default {login, logout, signup, search};
+async function getDownloadLink(id, hash){
+	let response = (await requests.GETRequest(`/eapi/book/${id}/${hash}/file`)).data;
+	if(!response.file){
+		return false;
+	}
+	response.filename = configs.getDownloadPath() + "/" + response.file.description.replaceAll(/\.| |\\|\/|\:/g, "") + "." + response.file.extension; 
+	console.log(response);
+	return response;
+}
+async function downloadFile(url){
+	let response = await requests.download(url);
+	return Buffer.from(response.data, 'binary');
+}
+export default {login, logout, signup, search, getDownloadLink, downloadFile};

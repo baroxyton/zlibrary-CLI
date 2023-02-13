@@ -56,7 +56,7 @@ function setLang(lang){
 	config.set("lang", lang);
 }
 function getLogin(){
-	return {"remix-userid":config.get("userid"),"remix-userkey":config.get("userkey")};
+	return {"remix-userid":config.get("userid"),"remix-userkey":config.get("userkey"), "cookie":`remix_userid=${config.get("userid")}; remix_userkey=${config.get("userkey")};`};
 }
 function getMirror(){
 	return config.get("domain");
@@ -71,4 +71,7 @@ function isBookInstalled(bookid){
 function getLang(){
 	return config.get("lang");
 }
-export default {isLoggedIn, login, logout, addDownloadedBook, setMirror, setLang, getLogin, getMirror, isBookInstalled, getLang};
+function getDownloadPath(){
+	return config.get("downloadPath");
+}
+export default {isLoggedIn, login, logout, addDownloadedBook, setMirror, setLang, getLogin, getMirror, isBookInstalled, getLang, getDownloadPath};

@@ -1,7 +1,11 @@
 import Enquirer from 'enquirer';
 import configs from './config.js';
-import api from './api.js'
-import vimShortcuts from './vim-shortcuts.js'
+import api from './api.js';
+import vimShortcuts from './vim-shortcuts.js';
+import fs from 'fs';
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 async function startMenu(){
 	console.clear();
 	let accountPrompt = configs.isLoggedIn()?"Sign out":"Log in/Sign up";
@@ -72,8 +76,8 @@ async function loginMenu(){
 }
 function openDownloads(){}
 /**
-* @param error {string}
-*/
+ * @param error {string}
+ */
 async function errorPrompt(error){
 	const prompt = new Enquirer.Toggle({
 		message: "Error: " + error,
@@ -87,11 +91,11 @@ async function searchMenu(){
 		name:"searchForm",
 		message:"Search Z-Library",
 		choices: [
-		{name:"message", message:"Search term", initial:""},
-		{name:"yearFrom", message:"Start Year", initial:"0"},
-		{name:"yearTo", message:"End year", initial:String(new Date().getFullYear())},
-		{name:"languages", message:"languages", initial:"english,german,french"}
-		
+			{name:"message", message:"Search term", initial:""},
+			{name:"yearFrom", message:"Start Year", initial:"0"},
+			{name:"yearTo", message:"End year", initial:String(new Date().getFullYear())},
+			{name:"languages", message:"languages", initial:"english,german,french"}
+
 		]
 	});
 	let answer = await prompt.run();
@@ -100,7 +104,7 @@ async function searchMenu(){
 	answer.order = "popular";
 	const response = await api.search(answer);
 	try{
-	await bookListMenu(response);
+		await bookListMenu(response);
 	}
 	catch(err){
 		await searchMenu();
@@ -109,9 +113,9 @@ async function searchMenu(){
 async function bookListMenu(bookList){
 	const promptChoices = bookList.books.map((book,index)=>{
 		return {
-		name:String(index),
-		value:String(index),
-		message: String(index + 1) + "| " +book.title + " by " + book.author
+			name:String(index),
+			value:String(index),
+			message: String(index + 1) + "| " +book.title + " by " + book.author
 		}	
 	});
 	const postToView = await Enquirer.prompt([{
@@ -122,6 +126,53 @@ async function bookListMenu(bookList){
 		choices:promptChoices,
 		actions:vimShortcuts
 	}]);
+	try{
+		await viewBook(bookList.books[postToView.book]);
+	}
+	catch(err){
+		await bookListMenu(bookList);
+	}
+}
+async function viewBook(bookData){
+	console.clear();
+	let displayData = "";
+	for(let data in bookData){
+		displayData += `${data}: ${bookData[data]}\n`
+	}
+	console.log(displayData);
+	const prompt = new Enquirer.Toggle({
+		message:"Download book? ",
+		name:"downloadBook",
+		enabled:"Download",
+		disabled:"Cancel"
+	});	
+	let answer = await prompt.run();
+	if(!answer){
+		throw new Error("download cancelled");
+	}
+	await downloadMenu(bookData.id, bookData.hash);
+}
+async function downloadMenu(id, hash){
+	console.clear();
+	console.log("fetching download link..");
+	const downloadData = await api.getDownloadLink(id, hash);
+	if(!downloadData.success == 1){
+		console.log("Error", downloadData);
+		await sleep(2000);
+		throw new Error("downloadError");
+	}
+	console.log("Downloading file..");
+	console.log("0%");
+	const fileData = await api.downloadFile(downloadData.file.downloadLink);
+	console.log("100%");
+
+	let isDirectoryCreated = fs.existsSync(configs.getDownloadPath())
+	if(!isDirectoryCreated){
+		fs.mkdirSync(configs.getDownloadPath(), { recursive: false })
+	}
+	console.log("Saving file..");
+	fs.writeFileSync(downloadData.filename, fileData);
+	await startMenu();
 	
 }
 startMenu();

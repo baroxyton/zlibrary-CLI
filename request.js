@@ -40,4 +40,12 @@ async function POSTRequest(endpoint, params){
 		headers
 	}).catch(err=>{return err.response});
 }
-export default {GETRequest, POSTRequest};
+async function download(url){
+let headers = {};
+	if(config.isLoggedIn()){
+		headers = config.getLogin();
+	}
+	headers["User-Agent"] = "CLI";
+	return await axios.get(url, {responseType: "arraybuffer", headers});
+}
+export default {GETRequest, POSTRequest, download};
