@@ -14,6 +14,10 @@ async function login(email, password){
 		return false;
 	}
 	configs.login(response.data.user.id.toString(), response.data.user.remix_userkey);
+	const domainRequest = (await requests.GETRequest(configs.getMirror(true) + "/")).data.split("\n");
+	const domains = domainRequest.find(line=>line.includes("const domainsList"));
+	const domainList = JSON.parse(domains.slice(domains.indexOf("["), -1));
+	configs.setPersonalDomain("https://" + domainList[0]);
 	return true;
 }
 async function search(searchData){

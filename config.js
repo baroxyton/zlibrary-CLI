@@ -9,6 +9,7 @@ const configSchema = {
 	userid: {type: 'string', default: undefined},
 	userkey: {type: 'string', default: undefined},
 	domain: {type: 'string', default: 'https://1lib.ch'},
+	personalDomain: {type: 'string', default: ''},
 	lang: {type: 'string', default: 'EN'},
 	downloadPath: {type: 'string', default: configPath + '/downloads'},
 };
@@ -26,6 +27,10 @@ function login(userid, userkey){
 	config.set("isLoggedIn", true);
 	config.set("userid", userid);
 	config.set("userkey", userkey);
+	return;
+}
+function setPersonalDomain(personalDomain){
+	config.set("personalDomain", personalDomain);
 	return;
 }
 function logout(){
@@ -58,7 +63,10 @@ function setLang(lang){
 function getLogin(){
 	return {"remix-userid":config.get("userid"),"remix-userkey":config.get("userkey"), "cookie":`remix_userid=${config.get("userid")}; remix_userkey=${config.get("userkey")};`};
 }
-function getMirror(){
+function getMirror(publicDomain=false){
+	if(isLoggedIn() && !publicDomain){
+		return config.get("personalDomain");
+	}
 	return config.get("domain");
 }
 
@@ -74,4 +82,4 @@ function getLang(){
 function getDownloadPath(){
 	return config.get("downloadPath");
 }
-export default {isLoggedIn, login, logout, addDownloadedBook, setMirror, setLang, getLogin, getMirror, isBookInstalled, getLang, getDownloadPath};
+export default {isLoggedIn, login, logout, addDownloadedBook, setMirror, setLang, getLogin, getMirror, isBookInstalled, getLang, getDownloadPath, setPersonalDomain};
