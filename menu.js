@@ -3,6 +3,7 @@ import configs from './config.js';
 import api from './api.js';
 import vimShortcuts from './vim-shortcuts.js';
 import fs from 'fs';
+import open from 'open';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -74,7 +75,10 @@ async function loginMenu(){
 	await api.login(response.mail, response.password);
 	startMenu();
 }
-function openDownloads(){}
+async function openDownloads(){
+	open(configs.getDownloadPath());
+	await startMenu();
+}
 /**
  * @param error {string}
  */
