@@ -1,4 +1,3 @@
-#!/bin/node
 import Enquirer from 'enquirer';
 import configs from './config.js';
 import api from './api.js';
