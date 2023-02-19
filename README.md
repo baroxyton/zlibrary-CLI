@@ -1,5 +1,13 @@
 # ZLibrary CLI
 ![screenshot](screenshots/startmenu.png)
+- [ZLibrary CLI](#zlibrary-cli)
+- [Installation](#installation)
+- [Features](#features)
+  * [Search](#search)
+  * [ZLibrary account systems](#zlibrary-account-systems)
+  * [Downloading](#downloading)
+- [How does this work?](#how-does-this-work)
+
 
 # Installation
 
