@@ -3,6 +3,13 @@ import menus from './menu.js';
 import configs from "./config.js";
 import axios from 'axios';
 
+async function getPrivateDomain(){
+	const domainRequest = (await requests.GETRequest(configs.getMirror(true) + "/")).data.split("\n");
+        const domains = domainRequest.find(line=>line.includes("const domainsList"));
+        const domainList = JSON.parse(domains.slice(domains.indexOf("["), -1));
+        configs.setPersonalDomain("https://" + domainList[0]);
+        return true;
+}
 /**
  * @params username {string}
  * @params password {string}
@@ -14,10 +21,17 @@ async function login(email, password){
 		return false;
 	}
 	configs.login(response.data.user.id.toString(), response.data.user.remix_userkey);
-	const domainRequest = (await requests.GETRequest(configs.getMirror(true) + "/")).data.split("\n");
-	const domains = domainRequest.find(line=>line.includes("const domainsList"));
-	const domainList = JSON.parse(domains.slice(domains.indexOf("["), -1));
-	configs.setPersonalDomain("https://" + domainList[0]);
+	await getPrivateDomain();
+	return true;
+}
+async function signup(email, password, name){
+	const response = await requests.POSTRequest("/eapi/user/registration", {email, password, name});
+	if(response.data.success != 1){
+		await menus.errorPrompt(JSON.stringify(response.data));
+		return false;
+	}
+	configs.login(response.data.user.id.toString(), response.data.user.remix_userkey);
+	await getPrivateDomain();
 	return true;
 }
 async function search(searchData){
@@ -27,8 +41,6 @@ async function search(searchData){
 		return false;
 	}
 	return response.data;
-}
-async function signup(username, password, email){
 }
 function logout(){
 	configs.logout();

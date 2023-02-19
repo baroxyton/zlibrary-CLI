@@ -56,6 +56,7 @@ async function loginOptions(){
 			loginMenu();
 			break;
 		case "Sign up":
+			signupMenu();
 			break;
 		case "Log in with user key":
 			break;
@@ -75,6 +76,22 @@ async function loginMenu(){
 	await api.login(response.mail, response.password);
 	startMenu();
 }
+async function signupMenu(){
+        console.clear();
+        const prompt = new Enquirer.Form({
+                name: "signupForm",
+                message:"Sign up to Z-Library",
+                choices: [
+                        {name: "mail", type: "input", message: "E-Mail", initial:"johndoe@example.com"},
+                        {name: "name", type: "name", message: "User name", initial:"JohnDoe"},
+                        {name:"password", type: "password", message: "Password", initial:"your password"}
+                ]
+        })
+        const response = await prompt.run();
+        await api.signup(response.mail, response.password, response.password);
+        startMenu();
+}
+
 async function openDownloads(){
 	open(configs.getDownloadPath());
 	await startMenu();
