@@ -17,6 +17,7 @@ supported systems: GNU/Linux with nodeJS 12+ installed
 - Filtering by language of book
 ## ZLibrary account systems
 - Login
+    - Login via email & password
     - Login via remix user tokens
 - Signing up
 - Logging out
