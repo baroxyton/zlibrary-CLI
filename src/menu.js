@@ -228,5 +228,4 @@ async function downloadMenu(id, hash){
 	await startMenu();
 	
 }
-startMenu();
-export default {errorPrompt};
+export default {errorPrompt,startMenu,settingsMenu, loginOptions, loginMenu,signupMenu, tokenLoginMenu, openDownloads, searchMenu, bookListMenu, viewBook, downloadMenu};

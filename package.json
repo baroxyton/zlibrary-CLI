@@ -16,6 +16,6 @@
     "open": "^8.4.1"
   },
   "bin":{
-  "zlib-cli":"./menu.js"
+  "zlib-cli":"./cli.js"
   }
 }
