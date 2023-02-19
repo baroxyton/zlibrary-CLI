@@ -82,4 +82,9 @@ function getLang(){
 function getDownloadPath(){
 	return config.get("downloadPath");
 }
-export default {isLoggedIn, login, logout, addDownloadedBook, setMirror, setLang, getLogin, getMirror, isBookInstalled, getLang, getDownloadPath, setPersonalDomain};
+function saveSettings(settings){
+	for(let setting in settings){
+		config.set(setting, settings[setting])
+	}
+}
+export default {isLoggedIn, login, logout, addDownloadedBook, setMirror, setLang, getLogin, getMirror, isBookInstalled, getLang, getDownloadPath, setPersonalDomain, saveSettings};

@@ -36,8 +36,19 @@ async function startMenu(){
 			break;
 	}
 }
-function settingsMenu(){
-
+async function settingsMenu(){
+	const prompt = new Enquirer.Form({
+		name:"settingPrompt",
+		message:"User settings",
+		choices:[
+			{name:"downloadPath",message:"Book download path", initial:configs.getDownloadPath()},
+			{name:"domain", message:"Public domain (eg. singlelogin.me)", initial:configs.getMirror(true)},
+			{name:"personalDomain", message:"Personal domain", initial:configs.getMirror()}
+		]
+	});
+	const response = await prompt.run();
+	configs.saveSettings(response);
+	await startMenu();
 }
 async function loginOptions(){
 	console.clear();
