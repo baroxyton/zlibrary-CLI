@@ -14,5 +14,8 @@
     "conf": "^11.0.1",
     "enquirer": "^2.3.6",
     "open": "^8.4.1"
+  },
+  "bin":{
+  "zlib-cli":"./menu.js"
   }
 }
