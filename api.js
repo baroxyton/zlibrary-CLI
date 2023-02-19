@@ -34,6 +34,11 @@ async function signup(email, password, name){
 	await getPrivateDomain();
 	return true;
 }
+async function tokenLogin(id, token){
+	configs.login(id, token);
+	await getPrivateDomain();
+	return true;
+}
 async function search(searchData){
 	const response = await requests.POSTRequest("/eapi/book/search", searchData);
 	if(response.data.success != 1){
@@ -59,4 +64,4 @@ async function downloadFile(url){
 	let response = await requests.download(url);
 	return Buffer.from(response.data, 'binary');
 }
-export default {login, logout, signup, search, getDownloadLink, downloadFile};
+export default {login, logout, signup, search, getDownloadLink, downloadFile, tokenLogin, getPrivateDomain};

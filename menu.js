@@ -44,7 +44,7 @@ async function loginOptions(){
 	const prompt = new Enquirer.Select({
 		name: "loginMenu",
 		message: "What would you like to do?",
-		choices: ["Log in", "Sign up", "Log in with user key", "Back"],
+		choices: ["Log in", "Sign up", "Log in with user key", "Update personal domain", "Back"],
 		actions:vimShortcuts	
 	});
 	let result = await prompt.run();
@@ -59,6 +59,11 @@ async function loginOptions(){
 			signupMenu();
 			break;
 		case "Log in with user key":
+			tokenLoginMenu();
+			break;
+		case "Update personal domain":
+			await api.getPrivateDomain();
+			await startMenu();
 			break;
 	}
 }
@@ -90,6 +95,19 @@ async function signupMenu(){
         const response = await prompt.run();
         await api.signup(response.mail, response.password, response.password);
         startMenu();
+}
+async function tokenLoginMenu(){
+	console.clear();
+	const prompt = new Enquirer.Form({
+		name: "tokenLoginForm",
+	message:"Log in with session token",
+		choices: [
+			{name:"id", type: "input", message:"Remix user id"},
+			{name:"token", type: "input", message:"Remix user token"}
+		]
+	});
+	const response = await prompt.run();
+	await api.tokenLogin(response.id, response.token);
 }
 
 async function openDownloads(){
