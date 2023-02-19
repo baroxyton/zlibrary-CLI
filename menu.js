@@ -144,12 +144,14 @@ async function searchMenu(){
 			{name:"message", message:"Search term", initial:""},
 			{name:"yearFrom", message:"Start Year", initial:"0"},
 			{name:"yearTo", message:"End year", initial:String(new Date().getFullYear())},
-			{name:"languages", message:"languages", initial:"english,german,french"}
+			{name:"languages", message:"languages", initial:"english,german,french"},
+			{name:"extensions", message:"Searched extenions", initial:"txt,pdf,fb2,epub,lit,mobi,rtf,djv,djvu,azw,azw3"}
 
 		]
 	});
 	let answer = await prompt.run();
 	answer.languages = answer.languages.split(",");
+	answer.extensions = answer.extensions.split(",");
 	answer.limit = 50
 	answer.order = "popular";
 	const response = await api.search(answer);
