@@ -25,7 +25,7 @@ async function startMenu(){
 		case "Log in/Sign up":
 			loginOptions();
 			break;
-		case "Search z-library":
+		case "Search Z-Library":
 			await searchMenu();
 			break;
 		case "Browse downloaded books":
@@ -142,10 +142,10 @@ async function searchMenu(){
 		message:"Search Z-Library",
 		choices: [
 			{name:"message", message:"Search term", initial:""},
-			{name:"yearFrom", message:"Start Year", initial:"0"},
+			{name:"yearFrom", message:"Start year", initial:"0"},
 			{name:"yearTo", message:"End year", initial:String(new Date().getFullYear())},
-			{name:"languages", message:"languages", initial:"english,german,french"},
-			{name:"extensions", message:"Searched extenions", initial:"txt,pdf,fb2,epub,lit,mobi,rtf,djv,djvu,azw,azw3"}
+			{name:"languages", message:"Languages", initial:"english,german,french"},
+			{name:"extensions", message:"Searched extensions", initial:"txt,pdf,fb2,epub,lit,mobi,rtf,djv,djvu,azw,azw3"}
 
 		]
 	});
@@ -206,7 +206,7 @@ async function viewBook(bookData){
 }
 async function downloadMenu(id, hash){
 	console.clear();
-	console.log("fetching download link..");
+	console.log("Fetching download link..");
 	const downloadData = await api.getDownloadLink(id, hash);
 	if(!downloadData.success == 1){
 		console.log("Error", downloadData);
