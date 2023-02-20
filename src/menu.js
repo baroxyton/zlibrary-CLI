@@ -104,7 +104,7 @@ async function signupMenu(){
                 ]
         })
         const response = await prompt.run();
-        await api.signup(response.mail, response.password, response.password);
+        await api.signup(response.mail, response.password, response.name);
         startMenu();
 }
 async function tokenLoginMenu(){
