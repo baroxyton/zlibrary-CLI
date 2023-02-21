@@ -13,7 +13,7 @@ async function startMenu(){
 	const prompt = new Enquirer.Select({
 		name: 'startmenu',
 		message: 'What would you like to do?',
-		choices: [accountPrompt, "Search z-library", "Browse downloaded books", "settings"],
+		choices: [accountPrompt, "Search Z-Library", "Browse downloaded books", "settings"],
 		actions:vimShortcuts
 	});
 	let result = await prompt.run();
