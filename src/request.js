@@ -46,6 +46,8 @@ let headers = {};
 		headers = config.getLogin();
 	}
 	headers["User-Agent"] = "CLI";
-	return await axios.get(url, {responseType: "arraybuffer", headers});
+	return await axios.get(url, {responseType: "arraybuffer", headers, onDownloadProgress:progressEvent=>{
+		console.log(Math.floor(progressEvent.progress* 100) + "%")
+	}});
 }
 export default {GETRequest, POSTRequest, download};
