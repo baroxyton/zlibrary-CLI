@@ -8,7 +8,7 @@
   * [Downloading](#downloading)
 - [How does this work?](#how-does-this-work)
 
-**Note: If you've installed an older version of zlibrary-cli, update the domain from https://1lib.ch to https://singlelogin.me in the settings**
+**Note: If you've installed a version before 1.0.5, update the domain from https://1lib.ch to https://singlelogin.me in the settings**
 # Installation
 
 Installation can be done using `sudo npm install -g zlibrary-cli`
