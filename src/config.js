@@ -8,7 +8,7 @@ const configSchema = {
 	installedBooks: {type: 'array', default: []},
 	userid: {type: 'string', default: undefined},
 	userkey: {type: 'string', default: undefined},
-	domain: {type: 'string', default: 'https://singlelogin.me'},
+	domain: {type: 'string', default: 'https://singlelogin.re'},
 	personalDomain: {type: 'string', default: ''},
 	lang: {type: 'string', default: 'EN'},
 	downloadPath: {type: 'string', default: configPath + '/downloads'},
