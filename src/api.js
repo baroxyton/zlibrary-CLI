@@ -1,14 +1,17 @@
 import requests from "./request.js";
 import menus from './menu.js';
 import configs from "./config.js";
-import axios from 'axios';
 
 async function getPrivateDomain(){
-	const domainRequest = (await requests.GETRequest(configs.getMirror(true) + "/")).data.split("\n");
-        const domains = domainRequest.find(line=>line.includes("const domainsList"));
-        const domainList = JSON.parse(domains.slice(domains.indexOf("["), -1));
-        configs.setPersonalDomain("https://" + domainList[0]);
-        return true;
+	const response = await requests.GETRequest(configs.getMirror(true) + "/");
+
+	const domainsKeyword = 'const domains';
+	const domainsString = new RegExp(`${domainsKeyword}\\s*=\\s*(.*)`)
+		.exec(response.data)[1]
+		.replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ')
+	const domains = JSON.parse(domainsString); // { books: [...], articles: [...] }
+	configs.setPersonalDomain("https://" + domains.books[0]);
+	return true;
 }
 /**
  * @params username {string}
