@@ -3,6 +3,8 @@ import menus from './menu.js';
 import configs from "./config.js";
 
 async function getPrivateDomain(){
+	// Note: private domains no longer seem to be used
+	/*
 	const response = await requests.GETRequest(configs.getMirror(true) + "/");
 
 	const domainsKeyword = 'const domains';
@@ -12,6 +14,8 @@ async function getPrivateDomain(){
 	const domains = JSON.parse(domainsString); // { books: [...], articles: [...] }
 	configs.setPersonalDomain("https://" + domains.books[0]);
 	return true;
+	*/
+
 }
 /**
  * @params username {string}
@@ -24,7 +28,7 @@ async function login(email, password){
 		return false;
 	}
 	configs.login(response.data.user.id.toString(), response.data.user.remix_userkey);
-	await getPrivateDomain();
+	//await getPrivateDomain();
 	return true;
 }
 async function signup(email, password, name){
