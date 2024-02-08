@@ -64,9 +64,12 @@ function getLogin(){
 	return {"remix-userid":config.get("userid"),"remix-userkey":config.get("userkey"), "cookie":`remix_userid=${config.get("userid")}; remix_userkey=${config.get("userkey")};`};
 }
 function getMirror(publicDomain=false){
+	// Personal domains no longer used
+	/*
 	if(isLoggedIn() && !publicDomain){
 		return config.get("personalDomain");
 	}
+	*/
 	return config.get("domain");
 }
 

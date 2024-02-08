@@ -1,6 +1,6 @@
 {
   "name": "zlibrary-cli",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "A CLI for Z-Library",
   "main": "menu.js",
   "scripts": {
